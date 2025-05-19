@@ -129,7 +129,7 @@ export const HomeScreen: React.FC = () => {
       onPress={() => navigation.navigate("ChildDetails", { childId: item.id, childName: item.name })}
     >
       <Image
-        source={item.avatar_url ? { uri: item.avatar_url } : require("@assets/images/child-placeholder.png")}
+        source={item.avatar_url ? { uri: item.avatar_url } : require("@assets/images/child-placeholder.svg")}
         style={styles.childAvatar}
       />
       <View style={styles.childInfo}>
@@ -155,7 +155,7 @@ export const HomeScreen: React.FC = () => {
       <View style={styles.header}>
         <View style={styles.userInfo}>
           <Image
-            source={profile?.avatar_url ? { uri: profile.avatar_url } : require("@assets/images/user-placeholder.png")}
+            source={profile?.avatar_url ? { uri: profile.avatar_url } : require("@assets/images/user-placeholder.svg")}
             style={styles.userAvatar}
           />
           <Text style={styles.greeting}>

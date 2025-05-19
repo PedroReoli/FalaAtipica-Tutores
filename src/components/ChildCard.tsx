@@ -14,7 +14,7 @@ export const ChildCard: React.FC<ChildCardProps> = ({ name, avatarUrl, age, onPr
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <View style={styles.content}>
         <Image
-          source={avatarUrl ? { uri: avatarUrl } : require("@assets/images/child-placeholder.png")}
+          source={avatarUrl ? { uri: avatarUrl } : require("@assets/images/child-placeholder.svg")}
           style={styles.avatar}
         />
         <View style={styles.info}>

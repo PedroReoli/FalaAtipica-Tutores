@@ -136,7 +136,7 @@ export const TipsScreen: React.FC = () => {
   const renderBookItem = ({ item }: { item: BookItem }) => (
     <TouchableOpacity style={styles.bookCard} onPress={() => handleOpenLink(item.link)}>
       <Image
-        source={item.cover_url ? { uri: item.cover_url } : require("@assets/images/image-placeholder.png")}
+        source={item.cover_url ? { uri: item.cover_url } : require("@assets/images/image-placeholder.svg")}
         style={styles.bookCover}
       />
       <View style={styles.bookInfo}>
@@ -254,7 +254,7 @@ export const TipsScreen: React.FC = () => {
           <Feather name="chevron-left" size={24} color={COLORS.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Dicas</Text>
-        <Image source={require("@assets/images/logo.png")} style={styles.headerLogo} />
+        <Image source={require("@assets/images/logo.svg")} style={styles.headerLogo} />
       </View>
 
       {/* Category Tabs */}

@@ -155,7 +155,7 @@ export const EditChildProfileScreen: React.FC = () => {
     <View key={device.id} style={styles.deviceItem}>
       <View style={styles.deviceInfo}>
         <Image
-          source={device.avatar_url ? { uri: device.avatar_url } : require("@assets/images/child-placeholder.png")}
+          source={device.avatar_url ? { uri: device.avatar_url } : require("@assets/images/child-placeholder.svg")}
           style={styles.deviceAvatar}
         />
         <View style={styles.deviceTextInfo}>

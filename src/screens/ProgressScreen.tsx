@@ -222,7 +222,7 @@ export const ProgressScreen: React.FC = () => {
         <Image
           source={{ uri: achievement.icon_url }}
           style={styles.achievementIcon}
-          defaultSource={require("@assets/images/image-placeholder.png")}
+          defaultSource={require("@assets/images/image-placeholder.svg")}
         />
       </View>
       {!achievement.earned && (
@@ -250,7 +250,7 @@ export const ProgressScreen: React.FC = () => {
                 source={
                   child.children.profile.avatar_url
                     ? { uri: child.children.profile.avatar_url }
-                    : require("@assets/images/child-placeholder.png")
+                    : require("@assets/images/child-placeholder.svg")
                 }
                 style={styles.childAvatar}
               />
@@ -285,7 +285,7 @@ export const ProgressScreen: React.FC = () => {
           <Feather name="chevron-left" size={24} color={COLORS.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Progresso</Text>
-        <Image source={require("@assets/images/logo.png")} style={styles.headerLogo} />
+        <Image source={require("@assets/images/logo.svg")} style={styles.headerLogo} />
       </View>
 
       {/* Content */}

@@ -1,3 +1,4 @@
+// src/components/ImageUploader.tsx
 "use client"
 
 import type React from "react"
@@ -6,7 +7,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Ale
 import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS } from "@/styles/variables"
 import { Feather } from "@expo/vector-icons"
 import { storageService } from "@/services/storageService"
-import { allowsEditing } from "@/utils/constants" // Declare the variable here
+import { allowsEditing } from "@/utils/constants"
 
 interface ImageUploaderProps {
   imageUrl: string | null
@@ -16,7 +17,7 @@ interface ImageUploaderProps {
   showOptions?: boolean
   title?: string
   shape?: "circle" | "square"
-  allowEditing?: boolean
+  allowEditing?: boolean // Corrigido: renomeado de allowEditingProp para allowEditing
   aspect?: [number, number]
 }
 
@@ -28,7 +29,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   showOptions = true,
   title,
   shape = "circle",
-  allowEditingProp = allowsEditing, // Use the declared variable here
+  allowEditing = allowsEditing, // Corrigido: renomeado para corresponder à prop
   aspect = [1, 1],
 }) => {
   const [loading, setLoading] = useState(false)
@@ -66,7 +67,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       setLoading(true)
       const result = await storageService.pickImage({
-        allowsEditing: allowEditingProp,
+        allowsEditing: allowEditing, // Corrigido: usando a prop correta
         aspect,
         quality: 0.7,
       })
@@ -87,7 +88,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       setLoading(true)
       const result = await storageService.takePhoto({
-        allowsEditing: allowEditingProp,
+        allowsEditing: allowEditing, // Corrigido: usando a prop correta
         aspect,
         quality: 0.7,
       })

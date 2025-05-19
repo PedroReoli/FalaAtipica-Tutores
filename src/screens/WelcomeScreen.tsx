@@ -16,7 +16,7 @@ export const WelcomeScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <View style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
+          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
           <Text style={styles.title}>FalAtipica</Text>
           <Text style={styles.subtitle}>Aprender, expressar e celebrar</Text>
         </View>

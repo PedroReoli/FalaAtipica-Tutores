@@ -183,7 +183,7 @@ export const SupportScreen: React.FC = () => {
           <Feather name="chevron-left" size={24} color={COLORS.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Suporte</Text>
-        <Image source={require("@assets/images/logo.png")} style={styles.headerLogo} />
+        <Image source={require("@assets/images/logo.svg")} style={styles.headerLogo} />
       </View>
 
       {/* Content */}

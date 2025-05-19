@@ -16,7 +16,7 @@ export const AccessInfoScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
+          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <View style={styles.content}>
@@ -25,7 +25,7 @@ export const AccessInfoScreen: React.FC = () => {
           <Text style={styles.subtitle}>Informativo</Text>
 
           <View style={styles.ceoCard}>
-            <Image source={require("@assets/images/ceo.png")} style={styles.ceoImage} />
+            <Image source={require("@assets/images/ceo.svg")} style={styles.ceoImage} />
             <View style={styles.ceoInfo}>
               <Text style={styles.ceoTitle}>CEO</Text>
               <Text style={styles.ceoName}>Pedro Lucas Reis</Text>

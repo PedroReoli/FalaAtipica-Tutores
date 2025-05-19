@@ -9,7 +9,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 100 }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("@assets/images/logo.png")}
+        source={require("@assets/images/logo.svg")}
         style={[styles.logo, { width: size, height: size }]}
         resizeMode="contain"
       />

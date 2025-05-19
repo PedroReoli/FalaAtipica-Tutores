@@ -137,7 +137,7 @@ export const ProfileScreen: React.FC = () => {
     <View key={child.id} style={styles.childItem}>
       <View style={styles.childInfo}>
         <Image
-          source={child.avatar_url ? { uri: child.avatar_url } : require("@assets/images/child-placeholder.png")}
+          source={child.avatar_url ? { uri: child.avatar_url } : require("@assets/images/child-placeholder.svg")}
           style={styles.childAvatar}
         />
         <View style={styles.childTextInfo}>
@@ -172,7 +172,7 @@ export const ProfileScreen: React.FC = () => {
             <Feather name="edit-2" size={20} color={COLORS.white} />
           </TouchableOpacity>
           <Image
-            source={profile?.avatar_url ? { uri: profile.avatar_url } : require("@assets/images/user-placeholder.png")}
+            source={profile?.avatar_url ? { uri: profile.avatar_url } : require("@assets/images/user-placeholder.svg")}
             style={styles.profileImage}
           />
           <Text style={styles.profileName}>{profile?.full_name || "[NOME DO USUÁRIO]"}</Text>

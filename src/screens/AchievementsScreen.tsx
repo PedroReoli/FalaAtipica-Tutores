@@ -113,7 +113,7 @@ export const AchievementsScreen: React.FC = () => {
         <Image
           source={{ uri: item.icon_url }}
           style={styles.achievementIcon}
-          defaultSource={require("@assets/images/image-placeholder.png")}
+          defaultSource={require("@assets/images/image-placeholder.svg")}
         />
       </View>
       <View style={styles.achievementContent}>
@@ -155,7 +155,7 @@ export const AchievementsScreen: React.FC = () => {
               source={
                 childProfile.profile.avatar_url
                   ? { uri: childProfile.profile.avatar_url }
-                  : require("@assets/images/child-placeholder.png")
+                  : require("@assets/images/child-placeholder.svg")
               }
               style={styles.childAvatar}
             />

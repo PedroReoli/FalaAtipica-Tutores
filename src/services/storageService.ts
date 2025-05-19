@@ -3,6 +3,7 @@ import { supabase } from "./supabase"
 import { Platform } from "react-native"
 import { decode } from "base64-arraybuffer"
 import * as FileSystem from "expo-file-system"
+import * as ImageManipulator from "expo-image-manipulator" // ADICIONADO: Importar ImageManipulator
 
 export interface ImageUploadResult {
   url: string | null
@@ -11,7 +12,7 @@ export interface ImageUploadResult {
 
 export interface ImagePickerOptions {
   allowsEditing?: boolean
-  aspect?: [number, number]
+  aspect?: [number, number] // CORRIGIDO: Definido como tupla com 2 elementos
   quality?: number
   mediaTypes?: ImagePicker.MediaTypeOptions
 }
@@ -58,7 +59,7 @@ export const storageService = {
     const defaultOptions = {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [1, 1] as [number, number], // CORRIGIDO: Definido como tupla com 2 elementos
       quality: 0.7,
       base64: true,
     }
@@ -76,7 +77,7 @@ export const storageService = {
     const defaultOptions = {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [1, 1] as [number, number], // CORRIGIDO: Definido como tupla com 2 elementos
       quality: 0.7,
       base64: true,
     }
@@ -91,16 +92,17 @@ export const storageService = {
   async compressImageIfNeeded(uri: string, quality = 0.7): Promise<string> {
     try {
       // Verificar tamanho do arquivo
-      const fileInfo = await FileSystem.getInfoAsync(uri)
+      const fileInfo = await FileSystem.getInfoAsync(uri, { size: true }) // CORRIGIDO: Adicionado { size: true }
 
       // Se o arquivo for maior que 1MB, comprimir
-      if (fileInfo.size && fileInfo.size > 1024 * 1024) {
-        const compressedUri = await FileSystem.manipulateAsync(
+      if (fileInfo.exists && fileInfo.size && fileInfo.size > 1024 * 1024) {
+        // CORRIGIDO: Usando ImageManipulator em vez de FileSystem.manipulateAsync
+        const result = await ImageManipulator.manipulateAsync(
           uri,
           [], // sem operações de manipulação
-          { compress: quality, format: FileSystem.SaveFormat.JPEG },
+          { compress: quality, format: ImageManipulator.SaveFormat.JPEG },
         )
-        return compressedUri.uri
+        return result.uri
       }
 
       return uri
@@ -127,12 +129,12 @@ export const storageService = {
       const compressedUri = await this.compressImageIfNeeded(imageUri)
 
       // Obter informações do arquivo
-      const fileInfo = await FileSystem.getInfoAsync(compressedUri)
+      const fileInfo = await FileSystem.getInfoAsync(compressedUri, { size: true }) // CORRIGIDO: Adicionado { size: true }
 
       // Validar imagem
-      const validation = this.validateImage(fileInfo.size || 0)
+      const validation = this.validateImage(fileInfo.exists && fileInfo.size ? fileInfo.size : 0) // CORRIGIDO: Verificação de existência
       if (!validation.valid) {
-        return { url: null, error: validation.error }
+        return { url: null, error: validation.error || "Imagem inválida" } // CORRIGIDO: Adicionado fallback
       }
 
       // Gerar nome de arquivo único

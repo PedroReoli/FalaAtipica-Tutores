@@ -56,7 +56,7 @@ export const RequestAccessInfoScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
+          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <View style={styles.content}>

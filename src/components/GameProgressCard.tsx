@@ -22,7 +22,7 @@ export const GameProgressCard: React.FC<GameProgressCardProps> = ({
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
       <Image
-        source={thumbnailUrl ? { uri: thumbnailUrl } : require("@assets/images/game-placeholder.png")}
+        source={thumbnailUrl ? { uri: thumbnailUrl } : require("@assets/images/game-placeholder.svg")}
         style={styles.thumbnail}
       />
       <View style={styles.content}>

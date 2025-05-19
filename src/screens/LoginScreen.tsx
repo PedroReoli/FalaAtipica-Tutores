@@ -64,7 +64,7 @@ export const LoginScreen: React.FC = () => {
             <Text style={styles.backSubText}>Início</Text>
           </TouchableOpacity>
 
-          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
+          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <View style={styles.content}>

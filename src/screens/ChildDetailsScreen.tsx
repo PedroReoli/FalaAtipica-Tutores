@@ -286,7 +286,7 @@ export const ChildDetailsScreen: React.FC = () => {
             source={
               childDetails?.avatar_url
                 ? { uri: childDetails.avatar_url }
-                : require("@assets/images/child-placeholder.png")
+                : require("@assets/images/child-placeholder.svg")
             }
             style={styles.profileImage}
           />

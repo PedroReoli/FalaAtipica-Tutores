@@ -163,7 +163,7 @@ export const SearchScreen: React.FC = () => {
           <Image
             source={{ uri: item.imageUrl }}
             style={styles.resultImage}
-            defaultSource={require("@assets/images/image-placeholder.png")}
+            defaultSource={require("@assets/images/image-placeholder.svg")}
           />
         ) : (
           <View style={styles.resultImagePlaceholder}>
