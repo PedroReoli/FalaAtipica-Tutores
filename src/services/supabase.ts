@@ -1,20 +1,26 @@
+import "react-native-url-polyfill/auto"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { createClient } from "@supabase/supabase-js"
+import type { Database } from "../types/supabase"
 
-// Usar as variáveis de ambiente que já existem
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://hajxzklpckalamtnwyez.supabase.co"
+// Configuração do Supabase com as credenciais corretas
+const supabaseUrl = "https://hajxzklpckalamtnwyez.supabase.co"
 const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhanh6a2xwY2thbGFtdG53eWV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1OTg4MjksImV4cCI6MjA2MzE3NDgyOX0.rG5uD-fyEUVrpLLYGWlJMVhuhHv1FwsKcPianDToKfg"
 
-if (!supabaseUrl) {
-  throw new Error("supabaseUrl is required")
-}
+// Criar cliente Supabase
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    storage: AsyncStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false,
+  },
+})
 
-if (!supabaseAnonKey) {
-  throw new Error("supabaseAnonKey is required")
-}
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Log para debug
+console.log("Supabase URL:", supabaseUrl)
+console.log("Supabase Key:", supabaseAnonKey ? "Configurada" : "Não configurada")
 
 // Interfaces baseadas na estrutura real do banco
 export interface Profile {
@@ -264,27 +270,6 @@ export const supabaseService = {
     } catch (error) {
       console.error("Erro ao buscar jogos por categoria:", error)
       throw error
-    }
-  },
-
-  // Testar conexão
-  async testConnection() {
-    try {
-      console.log("Testando conexão com Supabase...")
-      console.log("URL:", supabaseUrl)
-
-      const { data, error } = await supabase.from("profiles").select("count").limit(1)
-
-      if (error) {
-        console.error("Erro na conexão:", error)
-        return { success: false, error }
-      }
-
-      console.log("Conexão bem-sucedida!")
-      return { success: true, data }
-    } catch (error) {
-      console.error("Erro ao testar conexão:", error)
-      return { success: false, error }
     }
   },
 }

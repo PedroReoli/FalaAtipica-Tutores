@@ -33,12 +33,12 @@ import { MainTabNavigator } from "./MainTabNavigator"
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 export const AppNavigator: React.FC = () => {
-  const { session, loading } = useAuth()
+  const { user, loading } = useAuth()
 
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: COLORS.backgroundDark }}>
-        <ActivityIndicator size="large" color={COLORS.white} />
+        <ActivityIndicator size="large" color={COLORS.blue} />
       </View>
     )
   }
@@ -51,22 +51,16 @@ export const AppNavigator: React.FC = () => {
           contentStyle: { backgroundColor: COLORS.backgroundDark },
         }}
       >
-        {session ? (
+        {user ? (
           <>
             <Stack.Screen name="MainTabs" component={MainTabNavigator} />
-            <Stack.Screen
-              name="ChildDetails"
-              component={ChildDetailsScreen}
-              options={({ route }) => ({
-                headerShown: false,
-              })}
-            />
+            <Stack.Screen name="ChildDetails" component={ChildDetailsScreen} />
             <Stack.Screen
               name="GameProgress"
               component={GameProgressScreen}
               options={({ route }) => ({
                 headerShown: true,
-                title: route.params.gameName,
+                title: route.params?.gameName || "Progresso do Jogo",
                 headerStyle: { backgroundColor: COLORS.backgroundDark },
                 headerTintColor: COLORS.white,
               })}
@@ -76,7 +70,7 @@ export const AppNavigator: React.FC = () => {
               component={AchievementsScreen}
               options={({ route }) => ({
                 headerShown: true,
-                title: `Conquistas de ${route.params.childName}`,
+                title: `Conquistas de ${route.params?.childName || "Criança"}`,
                 headerStyle: { backgroundColor: COLORS.backgroundDark },
                 headerTintColor: COLORS.white,
               })}
@@ -91,48 +85,12 @@ export const AppNavigator: React.FC = () => {
                 headerTintColor: COLORS.white,
               }}
             />
-            <Stack.Screen
-              name="EditProfile"
-              component={EditProfileScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="EditChildProfile"
-              component={EditChildProfileScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="AddChild"
-              component={AddChildScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="Images"
-              component={ImagesScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="CategoryDetail"
-              component={CategoryDetailScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
-            <Stack.Screen
-              name="AddCategoryItem"
-              component={AddCategoryItemScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
+            <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+            <Stack.Screen name="EditChildProfile" component={EditChildProfileScreen} />
+            <Stack.Screen name="AddChild" component={AddChildScreen} />
+            <Stack.Screen name="Images" component={ImagesScreen} />
+            <Stack.Screen name="CategoryDetail" component={CategoryDetailScreen} />
+            <Stack.Screen name="AddCategoryItem" component={AddCategoryItemScreen} />
             <Stack.Screen
               name="Progress"
               component={ProgressScreen}
@@ -163,13 +121,7 @@ export const AppNavigator: React.FC = () => {
                 headerTintColor: COLORS.white,
               }}
             />
-            <Stack.Screen
-              name="Resources"
-              component={ResourcesScreen}
-              options={{
-                headerShown: false,
-              }}
-            />
+            <Stack.Screen name="Resources" component={ResourcesScreen} />
           </>
         ) : (
           <>

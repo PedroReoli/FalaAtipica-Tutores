@@ -1,26 +1,26 @@
+import type { NativeStackScreenProps } from "@react-navigation/native-stack"
+
 export type RootStackParamList = {
   Welcome: undefined
   Login: undefined
   ResetPassword: undefined
   AccessInfo: undefined
   RequestAccessInfo: undefined
-  Home: undefined
-  Profile: undefined
+  MainTabs: undefined
+  ChildDetails: { childId: string }
+  GameProgress: { gameId: string; gameName: string }
+  Achievements: { childId: string; childName: string }
   Settings: undefined
-  AddChild: undefined
   EditProfile: undefined
   EditChildProfile: { childId: string }
-  ChildDetails: { childId: string }
-  CategoryDetail: { categoryId: string }
-  AddCategoryItem: { categoryId: string }
-  GameProgress: undefined
+  AddChild: undefined
+  Images: { childId: string }
+  CategoryDetail: { categoryId: string; categoryName: string }
+  AddCategoryItem: { categoryId: string; categoryName: string }
   Progress: undefined
-  Achievements: undefined
-  Favorites: undefined
-  Notifications: undefined
-  Search: undefined
-  Images: undefined
-  Resources: undefined
-  Tips: undefined
   Support: undefined
+  Tips: undefined
+  Resources: undefined
 }
+
+export type RootStackScreenProps<T extends keyof RootStackParamList> = NativeStackScreenProps<RootStackParamList, T>

@@ -3,65 +3,100 @@
 import type React from "react"
 import { createContext, useState, useEffect, useContext } from "react"
 import { supabase } from "../services/supabase"
-import type { Session } from "@supabase/supabase-js"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import type { Database } from "../types/supabase"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 type Tutor = Database["public"]["Tables"]["tutors"]["Row"]
 
+// Definindo o tipo Professional manualmente já que não está no tipo Database
+type Professional = {
+  profile_id: string
+  specialty?: string | null
+  license_number?: string | null
+  active?: boolean
+  is_admin?: boolean
+}
+
+type UserData = Profile & {
+  tutor?: Tutor
+  professional?: Professional
+}
+
 type AuthContextData = {
-  session: Session | null
-  profile: (Profile & { tutor?: Tutor }) | null
+  user: UserData | null
   loading: boolean
   signIn: (email: string, password: string) => Promise<{ error: any }>
   signOut: () => Promise<void>
   resetPassword: (email: string) => Promise<{ error: any }>
-  completePasswordReset: (newPassword: string) => Promise<{ error: any }>
   refreshProfile: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
+// Chaves para o AsyncStorage
+const USER_STORAGE_KEY = "@FalaAtipica:user"
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [session, setSession] = useState<Session | null>(null)
-  const [profile, setProfile] = useState<(Profile & { tutor?: Tutor }) | null>(null)
+  const [user, setUser] = useState<UserData | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // Testar conexão com banco ao iniciar
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      if (session) {
-        fetchProfile(session.user.id)
-      } else {
-        setLoading(false)
-      }
-    })
+    async function testDatabaseConnection() {
+      try {
+        console.log("🔍 Testando conexão com banco de dados...")
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setSession(session)
-      if (session) {
-        await fetchProfile(session.user.id)
-      } else {
-        setProfile(null)
-        setLoading(false)
-      }
-    })
+        // Teste simples de conexão
+        const { data, error } = await supabase.from("profiles").select("id, email, full_name, user_type").limit(5)
 
-    return () => subscription.unsubscribe()
+        if (error) {
+          console.error("❌ Erro na conexão com banco:", error)
+        } else {
+          console.log("✅ Conexão com banco funcionando!")
+          console.log("👥 Usuários encontrados no banco:", data || [])
+        }
+      } catch (error) {
+        console.error("❌ Erro geral na conexão:", error)
+      }
+    }
+
+    testDatabaseConnection()
+    loadStoredUser()
   }, [])
 
-  const fetchProfile = async (userId: string) => {
+  // Carregar usuário do AsyncStorage ao iniciar
+  async function loadStoredUser() {
+    try {
+      const storedUser = await AsyncStorage.getItem(USER_STORAGE_KEY)
+
+      if (storedUser) {
+        const userData = JSON.parse(storedUser) as UserData
+        setUser(userData)
+
+        // Verificar se os dados do usuário ainda são válidos
+        fetchUserProfile(userData.id)
+      }
+    } catch (error) {
+      console.error("Erro ao carregar usuário:", error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Buscar perfil completo do usuário
+  const fetchUserProfile = async (profileId: string): Promise<UserData | null> => {
     try {
       // Buscar perfil do usuário
       const { data: profileData, error: profileError } = await supabase
         .from("profiles")
         .select("*")
-        .eq("user_id", userId)
+        .eq("id", profileId)
         .single()
 
       if (profileError) throw profileError
+
+      let userData: UserData = profileData
 
       if (profileData.user_type === "tutor") {
         // Buscar dados do tutor
@@ -71,46 +106,111 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .eq("profile_id", profileData.id)
           .single()
 
-        if (tutorError) throw tutorError
-        setProfile({ ...profileData, tutor: tutorData })
-      } else {
-        setProfile(profileData)
+        if (!tutorError && tutorData) {
+          userData = { ...profileData, tutor: tutorData }
+        }
+      } else if (profileData.user_type === "professional") {
+        // Buscar dados do profissional
+        const { data: professionalData, error: professionalError } = await supabase
+          .from("professionals")
+          .select("*")
+          .eq("profile_id", profileData.id)
+          .single()
+
+        if (!professionalError && professionalData) {
+          userData = { ...profileData, professional: professionalData }
+        }
       }
+
+      // Salvar no estado e no AsyncStorage
+      setUser(userData)
+      await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData))
+
+      return userData
     } catch (error) {
-      console.error("Error fetching profile:", error)
-    } finally {
-      setLoading(false)
+      console.error("Erro ao buscar perfil:", error)
+      return null
     }
   }
 
-  const refreshProfile = async () => {
-    if (session?.user.id) {
-      await fetchProfile(session.user.id)
+  const refreshProfile = async (): Promise<void> => {
+    if (user && user.id) {
+      await fetchUserProfile(user.id)
     }
   }
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    return { error }
+    try {
+      console.log("🔐 Tentando login com:", email)
+      setLoading(true)
+
+      // Buscar usuário diretamente na tabela profiles
+      const { data: userCheck, error: userCheckError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("email", email.toLowerCase().trim())
+        .eq("password", password.trim())
+
+      console.log("🔍 Verificação de usuário:", {
+        email: email.toLowerCase().trim(),
+        userCheck,
+        userCheckError,
+      })
+
+      if (userCheckError) {
+        console.log("❌ Erro na consulta:", userCheckError)
+        setLoading(false)
+        return { error: { message: "Erro ao consultar banco de dados" } }
+      }
+
+      if (!userCheck || userCheck.length === 0) {
+        console.log("❌ Email não encontrado no banco ou senha incorreta")
+        setLoading(false)
+        return { error: { message: "Email ou senha incorretos" } }
+      }
+
+      const user = userCheck[0]
+      console.log("✅ Login bem-sucedido:", user.full_name)
+
+      // Buscar dados adicionais do usuário
+      const userData = await fetchUserProfile(user.id)
+
+      if (!userData) {
+        setLoading(false)
+        return { error: { message: "Erro ao carregar dados do usuário" } }
+      }
+
+      setLoading(false)
+      return { error: null }
+    } catch (error) {
+      console.error("❌ Erro geral no login:", error)
+      setLoading(false)
+      return { error: { message: "Erro ao fazer login" } }
+    }
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    await AsyncStorage.removeItem(USER_STORAGE_KEY)
+    setUser(null)
   }
 
   const resetPassword = async (email: string) => {
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "falaatipica://reset-password",
-    })
-    return { error }
-  }
-
-  const completePasswordReset = async (newPassword: string) => {
     try {
-      const { error } = await supabase.auth.updateUser({
-        password: newPassword,
-      })
-      return { error }
+      // Verificar se o email existe
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("id")
+        .eq("email", email.toLowerCase().trim())
+        .single()
+
+      if (error || !data) {
+        return { error: { message: "Email não encontrado" } }
+      }
+
+      // Em um sistema real, aqui você enviaria um email com um link para redefinir a senha
+      // Como estamos simplificando, apenas retornamos sucesso
+
+      return { error: null }
     } catch (error) {
       return { error }
     }
@@ -119,13 +219,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   return (
     <AuthContext.Provider
       value={{
-        session,
-        profile,
+        user,
         loading,
         signIn,
         signOut,
         resetPassword,
-        completePasswordReset,
         refreshProfile,
       }}
     >
