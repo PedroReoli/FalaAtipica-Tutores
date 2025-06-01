@@ -58,7 +58,7 @@ export const LoginScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Welcome" as never)}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Welcome")}>
             <Feather name="arrow-left" size={24} color={COLORS.white} />
             <Text style={styles.backText}>Voltar</Text>
             <Text style={styles.backSubText}>Início</Text>
@@ -101,12 +101,12 @@ export const LoginScreen: React.FC = () => {
               )}
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={handleResetPassword}>
-              <Text style={styles.forgotPassword}>
-                Esqueceu a senha?{"\n"}
-                Solicitar redefinição
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.forgotPasswordContainer}>
+              <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
+              <TouchableOpacity onPress={handleResetPassword} style={styles.resetButton}>
+                <Text style={styles.resetButtonText}>Solicitar redefinição</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -119,12 +119,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.backgroundDark,
     padding: SPACING.lg,
+    paddingTop: SPACING.xl,
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: SPACING.xl,
+    marginTop: SPACING.lg,
   },
   backButton: {
     flexDirection: "row",
@@ -151,6 +153,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    justifyContent: "center",
     paddingTop: SPACING.xl,
   },
   title: {
@@ -187,17 +190,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: SPACING.md,
+    marginBottom: SPACING.xl,
   },
   loginButtonText: {
     color: COLORS.white,
     fontSize: FONT_SIZE.md,
     fontWeight: "600",
   },
-  forgotPassword: {
+  forgotPasswordContainer: {
+    alignItems: "center",
+    marginTop: SPACING.lg,
+  },
+  forgotPasswordText: {
     color: COLORS.white,
     fontSize: FONT_SIZE.sm,
-    textAlign: "center",
-    marginTop: SPACING.lg,
-    lineHeight: 20,
+    marginBottom: SPACING.md,
+  },
+  resetButton: {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    paddingVertical: SPACING.sm,
+    paddingHorizontal: SPACING.lg,
+    borderRadius: BORDER_RADIUS.md,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+  },
+  resetButtonText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.sm,
+    fontWeight: "500",
   },
 })

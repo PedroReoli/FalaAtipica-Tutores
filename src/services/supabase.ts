@@ -1,10 +1,8 @@
 import { createClient } from "@supabase/supabase-js"
 
 // Usar as variáveis de ambiente que já existem
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://hajxzklpckalamtnwyez.supabase.co"
-const supabaseAnonKey =
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhanh6a2xwY2thbGFtdG53eWV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1OTg4MjksImV4cCI6MjA2MzE3NDgyOX0.rG5uD-fyEUVrpLLYGWlJMVhuhHv1FwsKcPianDToKfg"
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://your-project.supabase.co"
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "your-anon-key"
 
 if (!supabaseUrl) {
   throw new Error("supabaseUrl is required")
@@ -139,6 +137,43 @@ export const tipsService = {
       ]
     } catch (error) {
       console.error("Erro ao buscar lembretes:", error)
+      throw error
+    }
+  },
+}
+
+export const supabaseService = {
+  async createAccessRequest(email: string, name: string, reason: string) {
+    try {
+      const { data, error } = await supabase.from("access_requests").insert([
+        {
+          email,
+          name,
+          reason,
+          status: "pending",
+          created_at: new Date().toISOString(),
+        },
+      ])
+
+      if (error) throw error
+      return data
+    } catch (error) {
+      console.error("Erro ao criar solicitação de acesso:", error)
+      throw error
+    }
+  },
+
+  async getAccessRequests() {
+    try {
+      const { data, error } = await supabase
+        .from("access_requests")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (error) throw error
+      return data
+    } catch (error) {
+      console.error("Erro ao buscar solicitações de acesso:", error)
       throw error
     }
   },

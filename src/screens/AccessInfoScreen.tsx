@@ -16,7 +16,13 @@ export const AccessInfoScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Welcome")}>
+            <Feather name="arrow-left" size={24} color={COLORS.white} />
+            <Text style={styles.backText}>Voltar</Text>
+            <Text style={styles.backSubText}>Início</Text>
+          </TouchableOpacity>
+
+          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <View style={styles.content}>
@@ -25,7 +31,7 @@ export const AccessInfoScreen: React.FC = () => {
           <Text style={styles.subtitle}>Informativo</Text>
 
           <View style={styles.ceoCard}>
-            <Image source={require("@assets/images/ceo.svg")} style={styles.ceoImage} />
+            <Image source={require("@assets/images/ceo.png")} style={styles.ceoImage} />
             <View style={styles.ceoInfo}>
               <Text style={styles.ceoTitle}>CEO</Text>
               <Text style={styles.ceoName}>Pedro Lucas Reis</Text>
@@ -56,7 +62,30 @@ const styles = StyleSheet.create({
     padding: SPACING.lg,
   },
   header: {
-    alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: SPACING.xl,
+    paddingTop: SPACING.md,
+  },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.blue,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+    borderRadius: BORDER_RADIUS.round,
+  },
+  backText: {
+    color: COLORS.white,
+    marginLeft: SPACING.sm,
+    fontSize: FONT_SIZE.md,
+    fontWeight: "bold",
+  },
+  backSubText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.md,
+    marginLeft: SPACING.xs,
   },
   logo: {
     width: 80,

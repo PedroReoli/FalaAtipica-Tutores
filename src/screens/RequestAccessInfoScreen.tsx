@@ -16,10 +16,11 @@ import {
 } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
-import { COLORS, SPACING, FONT_SIZE } from "@/styles/variables"
+import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS } from "@/styles/variables"
 import { globalStyles } from "@/styles/globals"
 import type { RootStackParamList } from "@/navigation/types"
 import { supabaseService } from "@/services/supabase"
+import { Feather } from "@expo/vector-icons"
 
 type RequestAccessInfoScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "RequestAccessInfo">
 
@@ -56,7 +57,13 @@ export const RequestAccessInfoScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
-          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("AccessInfo")}>
+            <Feather name="arrow-left" size={24} color={COLORS.white} />
+            <Text style={styles.backText}>Voltar</Text>
+            <Text style={styles.backSubText}>Info</Text>
+          </TouchableOpacity>
+
+          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <View style={styles.content}>
@@ -144,8 +151,30 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.backgroundDark,
   },
   header: {
-    alignItems: "flex-end",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: SPACING.lg,
+    paddingTop: SPACING.md,
+  },
+  backButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.blue,
+    paddingVertical: SPACING.md,
+    paddingHorizontal: SPACING.lg,
+    borderRadius: BORDER_RADIUS.round,
+  },
+  backText: {
+    color: COLORS.white,
+    marginLeft: SPACING.sm,
+    fontSize: FONT_SIZE.md,
+    fontWeight: "bold",
+  },
+  backSubText: {
+    color: COLORS.white,
+    fontSize: FONT_SIZE.md,
+    marginLeft: SPACING.xs,
   },
   logo: {
     width: 80,
