@@ -137,13 +137,13 @@ export const SearchScreen: React.FC = () => {
   const handleResultPress = (result: SearchResult) => {
     switch (result.type) {
       case "child":
-        navigation.navigate("ChildDetails", result.navigationParams)
+        navigation.navigate("ChildDetails" as never, result.navigationParams)
         break
       case "category":
-        navigation.navigate("CategoryDetail", result.navigationParams)
+        navigation.navigate("CategoryDetail" as never, result.navigationParams)
         break
       case "game":
-        navigation.navigate("GameProgress", result.navigationParams)
+        navigation.navigate("GameProgress" as never, result.navigationParams)
         break
       case "image":
         // Navegar para detalhes da imagem

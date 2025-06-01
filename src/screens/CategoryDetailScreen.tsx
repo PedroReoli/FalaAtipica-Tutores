@@ -110,7 +110,7 @@ export const CategoryDetailScreen: React.FC = () => {
   }, [categoryId])
 
   const handleAddItem = () => {
-    navigation.navigate("AddCategoryItem", { categoryId, categoryTitle })
+    navigation.navigate("AddCategoryItem" as never, { categoryId, categoryTitle })
   }
 
   const renderItem = ({ item }: { item: CategoryItem }) => (

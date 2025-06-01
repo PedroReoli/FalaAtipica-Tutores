@@ -4,9 +4,9 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native"
 import { Feather } from "@expo/vector-icons"
-import { COLORS } from "@/styles/variables"
-import { useAuth } from "@/context/AuthContext"
-import { favoritesService } from "@/services/favoritesService"
+import { COLORS } from "../styles/variables"
+import { useAuth } from "../context/AuthContext"
+import { favoritesService } from "../services/favoritesService"
 
 interface FavoriteButtonProps {
   itemId: string

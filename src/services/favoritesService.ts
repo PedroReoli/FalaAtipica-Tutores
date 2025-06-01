@@ -56,7 +56,7 @@ export const favoritesService = {
       if (error) throw error
 
       // Transformar os dados para um formato uniforme
-      const favorites: FavoriteItem[] = data.map((item) => {
+      const favorites: FavoriteItem[] = data.map((item: any) => {
         const favoriteItem: FavoriteItem = {
           id: item.id,
           type: item.item_type,

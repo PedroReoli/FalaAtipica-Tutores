@@ -285,7 +285,7 @@ export const ProgressScreen: React.FC = () => {
           <Feather name="chevron-left" size={24} color={COLORS.white} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Progresso</Text>
-        <Image source={require("@assets/images/logo.svg")} style={styles.headerLogo} />
+        <Image source={require("@assets/images/logo.png")} style={styles.headerLogo} />
       </View>
 
       {/* Content */}

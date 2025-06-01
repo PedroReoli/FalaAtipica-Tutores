@@ -117,15 +117,15 @@ export const ChildDetailsScreen: React.FC = () => {
   }
 
   const handleEditChild = () => {
-    navigation.navigate("EditChildProfile", { childId })
+    navigation.navigate("EditChildProfile" as never, { childId })
   }
 
   const handleViewAchievements = () => {
-    navigation.navigate("Achievements", { childId, childName })
+    navigation.navigate("Achievements" as never, { childId, childName })
   }
 
   const handleGamePress = (gameId: string, gameName: string) => {
-    navigation.navigate("GameProgress", { gameId, gameName, childId })
+    navigation.navigate("GameProgress" as never, { gameId, gameName, childId })
   }
 
   const calculateAge = (birthDate: string | null): string => {

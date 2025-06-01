@@ -58,13 +58,13 @@ export const LoginScreen: React.FC = () => {
     <SafeAreaView style={globalStyles.safeArea}>
       <View style={styles.container}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Welcome")}>
+          <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate("Welcome" as never)}>
             <Feather name="arrow-left" size={24} color={COLORS.white} />
             <Text style={styles.backText}>Voltar</Text>
             <Text style={styles.backSubText}>Início</Text>
           </TouchableOpacity>
 
-          <Image source={require("@assets/images/logo.svg")} style={styles.logo} resizeMode="contain" />
+          <Image source={require("@assets/images/logo.png")} style={styles.logo} resizeMode="contain" />
         </View>
 
         <View style={styles.content}>

@@ -1,2 +1,1 @@
-export * from "./variables"
-export * from "./globals"
+// Arquivo vazio - código será enviado manualmente

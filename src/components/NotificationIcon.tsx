@@ -38,7 +38,7 @@ export const NotificationIcon: React.FC<NotificationIconProps> = ({ size = 24, c
   }
 
   const handlePress = () => {
-    navigation.navigate("Notifications")
+    navigation.navigate("Notifications" as never)
   }
 
   return (

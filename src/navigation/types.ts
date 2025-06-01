@@ -2,37 +2,32 @@ export type RootStackParamList = {
   Welcome: undefined
   Login: undefined
   ResetPassword: { token?: string }
-  RequestAccess: undefined
-  AccessInfo: undefined
-  RequestAccessInfo: undefined
-  MainTabs: undefined
   Home: undefined
-  ChildDetails: { childId: string; childName: string }
-  GameProgress: { gameId: string; gameName: string; childId: string }
-  Achievements: { childId: string; childName: string }
-  Settings: undefined
   Profile: undefined
-  EditProfile: undefined
-  EditChildProfile: { childId: string }
   AddChild: undefined
-  Images: undefined
+  ChildDetails: { childId: string; childName: string }
+  EditChildProfile: { childId: string }
+  Achievements: { childId: string; childName: string }
+  Progress: undefined
+  GameProgress: { gameId: string; gameName: string; childId?: string }
   CategoryDetail: { categoryId: string; categoryTitle: string }
   AddCategoryItem: { categoryId: string; categoryTitle: string }
-  Progress: undefined
+  Images: undefined
+  Search: undefined
+  Favorites: undefined
+  Notifications: undefined
   Support: undefined
   Tips: undefined
-  Search: undefined
-  Favorites: undefined
-  Notifications: undefined
   Resources: undefined
-  Terms: undefined
-  Subscription: undefined
+  Settings: undefined
+  EditProfile: undefined
+  AccessInfo: undefined
+  RequestAccessInfo: undefined
 }
 
-export type MainTabParamList = {
+export type TabParamList = {
   Home: undefined
-  Search: undefined
+  Progress: undefined
   Favorites: undefined
-  Notifications: undefined
   Profile: undefined
 }

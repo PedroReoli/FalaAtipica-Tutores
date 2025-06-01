@@ -116,17 +116,17 @@ export const NotificationsScreen: React.FC = () => {
 
     // Navegar com base no tipo de notificação
     if (notification.data?.type === "child_progress") {
-      navigation.navigate("ChildDetails", {
+      navigation.navigate("ChildDetails" as never, {
         childId: notification.data.childId,
         childName: notification.data.childName || "Criança",
       })
     } else if (notification.data?.type === "achievement") {
-      navigation.navigate("Achievements", {
+      navigation.navigate("Achievements" as never, {
         childId: notification.data.childId,
         childName: notification.data.childName || "Criança",
       })
     } else if (notification.data?.type === "game") {
-      navigation.navigate("GameProgress", {
+      navigation.navigate("GameProgress" as never, {
         gameId: notification.data.gameId,
         gameName: notification.data.gameName || "Jogo",
         childId: notification.data.childId || "all",

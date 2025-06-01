@@ -81,10 +81,10 @@ export const FavoritesScreen: React.FC = () => {
   const handleItemPress = (item: FavoriteItem) => {
     switch (item.type) {
       case "game":
-        navigation.navigate("GameProgress", { gameId: item.id, gameName: item.title, childId: "all" })
+        navigation.navigate("GameProgress" as never, { gameId: item.id, gameName: item.title, childId: "all" })
         break
       case "category":
-        navigation.navigate("CategoryDetail", { categoryId: item.id, categoryTitle: item.title })
+        navigation.navigate("CategoryDetail" as never, { categoryId: item.id, categoryTitle: item.title })
         break
       case "image":
         // Navegar para detalhes da imagem

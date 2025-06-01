@@ -1,188 +1,145 @@
-import "react-native-url-polyfill/auto"
-import AsyncStorage from "@react-native-async-storage/async-storage"
 import { createClient } from "@supabase/supabase-js"
-import { AppState } from "react-native"
-import type { Database } from "@/types/supabase"
 
-// Substitua com suas credenciais do Supabase
-const supabaseUrl = process.env.SUPABASE_URL || ""
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ""
+// Usar as variáveis de ambiente que já existem
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://hajxzklpckalamtnwyez.supabase.co"
+const supabaseAnonKey =
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhhanh6a2xwY2thbGFtdG53eWV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc1OTg4MjksImV4cCI6MjA2MzE3NDgyOX0.rG5uD-fyEUVrpLLYGWlJMVhuhHv1FwsKcPianDToKfg"
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    storage: AsyncStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: false,
-  },
-})
+if (!supabaseUrl) {
+  throw new Error("supabaseUrl is required")
+}
 
-// Mantém a sessão atualizada quando o app está em primeiro plano
-AppState.addEventListener("change", (state) => {
-  if (state === "active") {
-    supabase.auth.startAutoRefresh()
-  } else {
-    supabase.auth.stopAutoRefresh()
-  }
-})
+if (!supabaseAnonKey) {
+  throw new Error("supabaseAnonKey is required")
+}
 
-// Funções auxiliares para operações comuns
-export const supabaseService = {
-  // Perfis
-  async fetchProfile(userId: string) {
-    const { data, error } = await supabase.from("profiles").select("*").eq("user_id", userId).single()
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
-    if (error) throw error
-    return data
-  },
+export interface BookItem {
+  id: string
+  title: string
+  author: string
+  link: string
+  coverUrl?: string
+}
 
-  async fetchTutorProfile(profileId: string) {
-    const { data, error } = await supabase.from("tutors").select("*").eq("profile_id", profileId).single()
+export interface InstagramPage {
+  id: string
+  name: string
+  handle: string
+  link: string
+  imageUrl?: string
+}
 
-    if (error) throw error
-    return data
-  },
+export interface Reminder {
+  id: string
+  title: string
+  content: string
+  date?: string
+}
 
-  // Crianças
-  async fetchChildren(tutorProfileId: string) {
-    const { data, error } = await supabase
-      .from("tutor_children")
-      .select(`
-        child_id,
-        relationship,
-        is_primary,
-        children:child_id (
-          profile_id,
-          birth_date,
-          diagnosis,
-          notes,
-          active,
-          profile:profile_id (
-            id,
-            full_name,
-            avatar_url
-          )
-        )
-      `)
-      .eq("tutor_id", tutorProfileId)
+export const tipsService = {
+  async getRecommendedBooks(): Promise<BookItem[]> {
+    try {
+      // Aqui você faria chamadas reais para o Supabase
+      // Por enquanto, vamos retornar dados mockados
 
-    if (error) throw error
-    return data
-  },
+      // Simular um atraso de rede
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-  async fetchChildDetails(childId: string) {
-    const { data, error } = await supabase
-      .from("children")
-      .select(`
-        profile_id,
-        birth_date,
-        diagnosis,
-        notes,
-        active,
-        profile:profile_id (
-          id,
-          full_name,
-          avatar_url,
-          email,
-          phone
-        )
-      `)
-      .eq("profile_id", childId)
-      .single()
-
-    if (error) throw error
-    return data
+      return [
+        {
+          id: "1",
+          title: "Comunicação Alternativa",
+          author: "Maria Silva",
+          link: "https://example.com/book1",
+          coverUrl: "https://example.com/covers/book1.jpg",
+        },
+        {
+          id: "2",
+          title: "Autismo e Educação",
+          author: "João Santos",
+          link: "https://example.com/book2",
+          coverUrl: "https://example.com/covers/book2.jpg",
+        },
+        {
+          id: "3",
+          title: "Desenvolvimento Infantil",
+          author: "Ana Oliveira",
+          link: "https://example.com/book3",
+          coverUrl: "https://example.com/covers/book3.jpg",
+        },
+        {
+          id: "4",
+          title: "Inclusão na Prática",
+          author: "Carlos Mendes",
+          link: "https://example.com/book4",
+          coverUrl: "https://example.com/covers/book4.jpg",
+        },
+      ]
+    } catch (error) {
+      console.error("Erro ao buscar livros recomendados:", error)
+      throw error
+    }
   },
 
-  // Categorias
-  async fetchCategories() {
-    const { data, error } = await supabase.from("game_categories").select("*").order("name")
+  async getInstagramPages(): Promise<InstagramPage[]> {
+    try {
+      // Aqui você faria chamadas reais para o Supabase
+      // Por enquanto, vamos retornar dados mockados
 
-    if (error) throw error
-    return data
+      // Simular um atraso de rede
+      await new Promise((resolve) => setTimeout(resolve, 500))
+
+      return [
+        {
+          id: "1",
+          name: "Autismo em Foco",
+          handle: "@autismoemfoco",
+          link: "https://instagram.com/autismoemfoco",
+          imageUrl: "https://example.com/instagram/autismoemfoco.jpg",
+        },
+        {
+          id: "2",
+          name: "Comunicação Inclusiva",
+          handle: "@comunicacaoinclusiva",
+          link: "https://instagram.com/comunicacaoinclusiva",
+          imageUrl: "https://example.com/instagram/comunicacaoinclusiva.jpg",
+        },
+        {
+          id: "3",
+          name: "Desenvolvimento Atípico",
+          handle: "@desenvolvimentoatipico",
+          link: "https://instagram.com/desenvolvimentoatipico",
+          imageUrl: "https://example.com/instagram/desenvolvimentoatipico.jpg",
+        },
+      ]
+    } catch (error) {
+      console.error("Erro ao buscar páginas do Instagram:", error)
+      throw error
+    }
   },
 
-  async fetchCategoryItems(categoryId: string) {
-    const { data, error } = await supabase.from("games").select("*").eq("category_id", categoryId).order("name")
+  async getReminders(): Promise<Reminder[]> {
+    try {
+      // Aqui você faria chamadas reais para o Supabase
+      // Por enquanto, vamos retornar dados mockados
 
-    if (error) throw error
-    return data
-  },
+      // Simular um atraso de rede
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-  // Progresso
-  async fetchGameProgress(childId: string) {
-    const { data, error } = await supabase
-      .from("game_progress")
-      .select(`
-        id,
-        level_reached,
-        score,
-        completed,
-        last_played_at,
-        total_time_played,
-        game:game_id (
-          id,
-          name,
-          description,
-          difficulty_level,
-          thumbnail_url
-        )
-      `)
-      .eq("child_id", childId)
-
-    if (error) throw error
-    return data
-  },
-
-  async fetchAchievements(childId: string) {
-    const { data, error } = await supabase
-      .from("child_achievements")
-      .select(`
-        earned_at,
-        achievement:achievement_id (
-          id,
-          name,
-          description,
-          icon_url,
-          points,
-          requirement_description
-        )
-      `)
-      .eq("child_id", childId)
-
-    if (error) throw error
-    return data
-  },
-
-  async fetchAllAchievements() {
-    const { data, error } = await supabase.from("achievements").select("*")
-
-    if (error) throw error
-    return data
-  },
-
-  // Solicitações de acesso
-  async createAccessRequest(email: string, name: string, reason: string) {
-    const { data, error } = await supabase.from("access_requests").insert([
-      {
-        email,
-        name,
-        reason,
-        status: "pending",
-      },
-    ])
-
-    if (error) throw error
-    return data
-  },
-
-  // Redefinição de senha
-  async completePasswordReset(newPassword: string) {
-    const { error } = await supabase.auth.updateUser({
-      password: newPassword,
-    })
-
-    if (error) throw error
-    return true
+      return [
+        {
+          id: "1",
+          title: "Lembrete",
+          content: "Mantenha a consistência no uso do aplicativo para melhores resultados.",
+          date: "2023-05-15",
+        },
+      ]
+    } catch (error) {
+      console.error("Erro ao buscar lembretes:", error)
+      throw error
+    }
   },
 }

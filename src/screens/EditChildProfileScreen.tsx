@@ -15,7 +15,8 @@ import {
   ActivityIndicator,
 } from "react-native"
 import { useNavigation, useRoute } from "@react-navigation/native"
-import type { NativeStackNavigationProp, RouteProp } from "@react-navigation/native-stack"
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack"
+import type { RouteProp } from "@react-navigation/native"
 import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS } from "@/styles/variables"
 import type { RootStackParamList } from "@/navigation/types"
 import { Feather } from "@expo/vector-icons"

@@ -2,9 +2,9 @@
 
 import type React from "react"
 import { createContext, useState, useEffect, useContext } from "react"
-import { supabase, supabaseService } from "@/services/supabase"
+import { supabase } from "../services/supabase"
 import type { Session } from "@supabase/supabase-js"
-import type { Database } from "@/types/supabase"
+import type { Database } from "../types/supabase"
 
 type Profile = Database["public"]["Tables"]["profiles"]["Row"]
 type Tutor = Database["public"]["Tables"]["tutors"]["Row"]
@@ -54,10 +54,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchProfile = async (userId: string) => {
     try {
-      const profileData = await supabaseService.fetchProfile(userId)
+      // Buscar perfil do usuário
+      const { data: profileData, error: profileError } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("user_id", userId)
+        .single()
+
+      if (profileError) throw profileError
 
       if (profileData.user_type === "tutor") {
-        const tutorData = await supabaseService.fetchTutorProfile(profileData.id)
+        // Buscar dados do tutor
+        const { data: tutorData, error: tutorError } = await supabase
+          .from("tutors")
+          .select("*")
+          .eq("profile_id", profileData.id)
+          .single()
+
+        if (tutorError) throw tutorError
         setProfile({ ...profileData, tutor: tutorData })
       } else {
         setProfile(profileData)
@@ -93,8 +107,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const completePasswordReset = async (newPassword: string) => {
     try {
-      await supabaseService.completePasswordReset(newPassword)
-      return { error: null }
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      })
+      return { error }
     } catch (error) {
       return { error }
     }

@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native"
-import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS, FONT_WEIGHT, SHADOWS } from "./variables"
+import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS, SHADOWS } from "./variables"
 
 export const globalStyles = StyleSheet.create({
   container: {
@@ -18,7 +18,7 @@ export const globalStyles = StyleSheet.create({
   },
   title: {
     fontSize: FONT_SIZE.xxl,
-    fontWeight: FONT_WEIGHT.bold,
+    fontWeight: "bold",
     color: COLORS.white,
     textAlign: "center",
     marginBottom: SPACING.md,
@@ -52,7 +52,7 @@ export const globalStyles = StyleSheet.create({
   buttonText: {
     color: COLORS.white,
     fontSize: FONT_SIZE.md,
-    fontWeight: FONT_WEIGHT.medium,
+    fontWeight: "500",
   },
   input: {
     backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -95,7 +95,7 @@ export const globalStyles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: FONT_SIZE.lg,
-    fontWeight: FONT_WEIGHT.bold,
+    fontWeight: "bold",
     marginBottom: SPACING.xs,
   },
   cardText: {
