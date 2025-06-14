@@ -20,6 +20,7 @@ import { Feather } from "@expo/vector-icons"
 import { useAuth } from "@/context/AuthContext"
 import type { RootStackParamList } from "@/navigation/types"
 import { supabaseService } from "@/services/supabase"
+import { PlaceholderIcon } from '../components/PlaceholderIcon'
 
 type AchievementsScreenRouteProp = RouteProp<RootStackParamList, "Achievements">
 
@@ -197,6 +198,19 @@ export const AchievementsScreen: React.FC = () => {
             </View>
           }
         />
+
+        <View style={{ backgroundColor: COLORS.backgroundLight, flex: 1, padding: 16 }}>
+          <Text style={{ fontSize: 22, fontWeight: '700', color: COLORS.blue, marginBottom: 16 }}>Broches</Text>
+          <View style={{ flexDirection: 'row', gap: 16 }}>
+            {[1,2,3].map((i) => (
+              <View key={i} style={{ alignItems: 'center' }}>
+                <PlaceholderIcon size={48} color={COLORS.yellow} />
+                <Text style={{ fontSize: 12, color: COLORS.grayDark, marginTop: 4 }}>Broche {i}</Text>
+                <Text style={{ fontSize: 10, color: COLORS.gray }}>Breve descrição do broche {i}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   )

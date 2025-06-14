@@ -19,6 +19,7 @@ import { COLORS, SPACING, FONT_SIZE, BORDER_RADIUS, SHADOWS } from "@/styles/var
 import { Feather } from "@expo/vector-icons"
 import { useAuth } from "@/context/AuthContext"
 import { supabaseService } from "@/services/supabase"
+import { PlaceholderIcon } from '../components/PlaceholderIcon'
 
 interface ProgressMetric {
   id: string

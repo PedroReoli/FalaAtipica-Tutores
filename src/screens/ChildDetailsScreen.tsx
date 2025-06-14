@@ -21,6 +21,7 @@ import { useAuth } from "@/context/AuthContext"
 import type { RootStackParamList } from "@/navigation/types"
 import { supabaseService } from "@/services/supabase"
 import { progressService } from "@/services/progressService"
+import { UserAvatar } from '../components/UserAvatar'
 
 type ChildDetailsScreenRouteProp = RouteProp<RootStackParamList, "ChildDetails">
 
@@ -282,14 +283,7 @@ export const ChildDetailsScreen: React.FC = () => {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.profileSection}>
-          <Image
-            source={
-              childDetails?.avatar_url
-                ? { uri: childDetails.avatar_url }
-                : require("@assets/images/child-placeholder.svg")
-            }
-            style={styles.profileImage}
-          />
+          <UserAvatar uri={childDetails?.avatar_url} size={96} />
           <View style={styles.profileInfo}>
             <Text style={styles.profileName}>{childDetails?.name || childName}</Text>
             {childDetails?.diagnosis && <Text style={styles.profileDiagnosis}>{childDetails.diagnosis}</Text>}

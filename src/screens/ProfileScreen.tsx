@@ -21,6 +21,7 @@ import type { RootStackParamList } from "@/navigation/types"
 import { useAuth } from "@/context/AuthContext"
 import { Feather } from "@expo/vector-icons"
 import { supabaseService } from "@/services/supabase"
+import { UserAvatar } from '../components/UserAvatar'
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>
 
@@ -167,17 +168,13 @@ export const ProfileScreen: React.FC = () => {
       {/* Content */}
       <ScrollView style={styles.content}>
         {/* Profile Info */}
-        <View style={styles.profileSection}>
-          <TouchableOpacity style={styles.editProfileButton} onPress={handleEditProfile}>
-            <Feather name="edit-2" size={20} color={COLORS.white} />
-          </TouchableOpacity>
-          <Image
-            source={profile?.avatar_url ? { uri: profile.avatar_url } : require("@assets/images/user-placeholder.svg")}
-            style={styles.profileImage}
-          />
-          <Text style={styles.profileName}>{profile?.full_name || "[NOME DO USUÁRIO]"}</Text>
-          <Text style={styles.profileEmail}>{profile?.email || "EMAIL DO USUÁRIO"}</Text>
-          {profile?.phone && <Text style={styles.profilePhone}>{profile.phone}</Text>}
+        <View style={{ backgroundColor: COLORS.backgroundLight, flex: 1, padding: 16 }}>
+          <View style={{ alignItems: 'center', marginBottom: 16 }}>
+            <UserAvatar uri={profile?.avatar_url} size={96} />
+            <Text style={{ fontSize: 20, fontWeight: '700', color: COLORS.blue, marginTop: 8 }}>{profile?.full_name || '[NOME DO USUARIO]'}</Text>
+            <Text style={{ fontSize: 14, color: COLORS.gray }}>{profile?.email || 'EMAIL DO USUARIO'}</Text>
+          </View>
+          {/* ...restante do perfil... */}
         </View>
 
         {/* General Settings */}

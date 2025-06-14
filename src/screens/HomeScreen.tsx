@@ -21,6 +21,7 @@ import type { RootStackParamList } from "@/navigation/types"
 import { useAuth } from "@/context/AuthContext"
 import { supabase } from "@/services/supabase"
 import { Feather } from "@expo/vector-icons"
+import { UserAvatar } from '../components/UserAvatar'
 
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList>
 
@@ -128,10 +129,7 @@ export const HomeScreen: React.FC = () => {
       style={styles.childItem}
       onPress={() => navigation.navigate("ChildDetails", { childId: item.id, childName: item.name })}
     >
-      <Image
-        source={item.avatar_url ? { uri: item.avatar_url } : require("@assets/images/child-placeholder.svg")}
-        style={styles.childAvatar}
-      />
+      <UserAvatar uri={item.avatar_url} size={40} />
       <View style={styles.childInfo}>
         <Text style={styles.childName}>{item.name}</Text>
         <Text style={styles.childDiagnosis}>{item.diagnosis}</Text>
@@ -154,10 +152,7 @@ export const HomeScreen: React.FC = () => {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.userInfo}>
-          <Image
-            source={profile?.avatar_url ? { uri: profile.avatar_url } : require("@assets/images/user-placeholder.svg")}
-            style={styles.userAvatar}
-          />
+          <UserAvatar uri={profile?.avatar_url} size={48} />
           <Text style={styles.greeting}>
             Olá{"\n"}
             <Text style={styles.userName}>{profile?.full_name || "Tutor"}</Text>
@@ -251,12 +246,6 @@ const styles = StyleSheet.create({
   userInfo: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  userAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: SPACING.md,
   },
   greeting: {
     color: COLORS.white,
@@ -391,12 +380,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     ...SHADOWS.small,
-  },
-  childAvatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: SPACING.md,
   },
   childInfo: {
     flex: 1,
