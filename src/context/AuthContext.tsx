@@ -144,36 +144,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       console.log("🔐 Tentando login com:", email)
       setLoading(true)
 
-      // Buscar usuário diretamente na tabela profiles
-      const { data: userCheck, error: userCheckError } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("email", email.toLowerCase().trim())
-        .eq("password", password.trim())
-
-      console.log("🔍 Verificação de usuário:", {
+      // Primeiro, fazer login com o Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: email.toLowerCase().trim(),
-        userCheck,
-        userCheckError,
+        password: password.trim()
       })
 
-      if (userCheckError) {
-        console.log("❌ Erro na consulta:", userCheckError)
-        setLoading(false)
-        return { error: { message: "Erro ao consultar banco de dados" } }
-      }
-
-      if (!userCheck || userCheck.length === 0) {
-        console.log("❌ Email não encontrado no banco ou senha incorreta")
+      if (authError) {
+        console.log("❌ Erro na autenticação:", authError)
         setLoading(false)
         return { error: { message: "Email ou senha incorretos" } }
       }
 
-      const user = userCheck[0]
-      console.log("✅ Login bem-sucedido:", user.full_name)
+      if (!authData.user) {
+        console.log("❌ Usuário não encontrado")
+        setLoading(false)
+        return { error: { message: "Usuário não encontrado" } }
+      }
+
+      console.log("✅ Login bem-sucedido:", authData.user.email)
 
       // Buscar dados adicionais do usuário
-      const userData = await fetchUserProfile(user.id)
+      const userData = await fetchUserProfile(authData.user.id)
 
       if (!userData) {
         setLoading(false)
